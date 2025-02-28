@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFOGRAFÍA JAJA (prototipo)</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@1.6.5/dist/flowbite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@1.6.5/dist/flowbite.min.js"></script>
+    <style>
+        :root {
+    --primary-color: #5D5CDE;
+    --accent-color: #FF6B6B;
+    --text-color: #FFFFFF;
+    --bg-color: #181818;
+    --card-color: #2A2A2A;
+    --border-color: #3A3A3A;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+.bg-custom-card {
+    background-color: var(--card-color);
+}
+
+.text-custom {
+    color: var(--text-color);
+}
+.border-custom {
+    border-color: var(--border-color);
+}
+
+
+        
+
+        
+
+        .city-silhouette {
+            height: 120px;
+            background-image: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'><path d='M0,0 L50,0 L50,80 L80,80 L80,40 L110,40 L110,80 L140,80 L140,60 L170,60 L170,90 L200,90 L200,60 L230,60 L230,30 L260,30 L260,70 L290,70 L290,40 L320,40 L320,80 L350,80 L350,50 L380,50 L380,70 L410,70 L410,90 L440,90 L440,50 L470,50 L470,80 L500,80 L500,40 L530,40 L530,60 L560,60 L560,30 L590,30 L590,70 L620,70 L620,40 L650,40 L650,90 L680,90 L680,60 L710,60 L710,30 L740,30 L740,80 L770,80 L770,50 L800,50 L800,70 L830,70 L830,40 L860,40 L860,90 L890,90 L890,50 L920,50 L920,80 L950,80 L950,30 L980,30 L980,70 L1010,70 L1010,40 L1040,40 L1040,90 L1070,90 L1070,50 L1100,50 L1100,80 L1130,80 L1130,40 L1160,40 L1160,60 L1190,60 L1190,0 L1200,0 L1200,120 L0,120 Z'></path></svg>");
+            mask-size: cover;
+            mask-repeat: no-repeat;
+            -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'><path d='M0,0 L50,0 L50,80 L80,80 L80,40 L110,40 L110,80 L140,80 L140,60 L170,60 L170,90 L200,90 L200,60 L230,60 L230,30 L260,30 L260,70 L290,70 L290,40 L320,40 L320,80 L350,80 L350,50 L380,50 L380,70 L410,70 L410,90 L440,90 L440,50 L470,50 L470,80 L500,80 L500,40 L530,40 L530,60 L560,60 L560,30 L590,30 L590,70 L620,70 L620,40 L650,40 L650,90 L680,90 L680,60 L710,60 L710,30 L740,30 L740,80 L770,80 L770,50 L800,50 L800,70 L830,70 L830,40 L860,40 L860,90 L890,90 L890,50 L920,50 L920,80 L950,80 L950,30 L980,30 L980,70 L1010,70 L1010,40 L1040,40 L1040,90 L1070,90 L1070,50 L1100,50 L1100,80 L1130,80 L1130,40 L1160,40 L1160,60 L1190,60 L1190,0 L1200,0 L1200,120 L0,120 Z'></path></svg>");
+            -webkit-mask-size: cover;
+            -webkit-mask-repeat: no-repeat;
+        }
+        
+ .section-transition {
+            height: 60px;
+            background-image: linear-gradient(45deg, var(--primary-color) 25%, transparent 25%, transparent 75%, var(--primary-color) 75%),
+                              linear-gradient(45deg, var(--primary-color) 25%, transparent 25%, transparent 75%, var(--primary-color) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 70%);
+            opacity: 0.1;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .illustration {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .illustration:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background-color: rgba(93, 92, 222, 0.2);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        }
+
+        /* Personas estilizadas */
+        .person {
+            position: relative;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .person-head {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+
+        .person-body {
+            width: 12px;
+            height: 30px;
+            background-color: var(--primary-color);
+            margin: 2px auto 0;
+            border-radius: 5px 5px 0 0;
+        }
+
+        /* Persona con signo de alerta */
+        .person-alert .person-head {
+            background-color: var(--accent-color);
+        }
+        
+        .person-alert .person-body {
+            background-color: var(--accent-color);
+        }
+
+        .person-alert:after {
+            content: '!';
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 16px;
+            background-color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        /* Retraso para elementos secuenciales */
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        .delay-5 { animation-delay: 1s; }
+    </style>
+</head>
+
+<body class="font-sans">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <!-- Encabezado -->
+        <header class="text-center mb-10">
+            <div class="city-silhouette mb-6"></div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-custom">
+                <span class="text-primary" style="color: var(--primary-color);">Inseguridad Social</span> en Ciudad Guzmán
+            </h1>
+            <p class="text-lg md:text-xl text-custom opacity-80 max-w-2xl mx-auto">
+                Análisis detallado sobre la situación actual de la seguridad en nuestra comunidad
+            </p>
+        </header>
+
+        <!-- Introducción -->
+        <section class="mb-16 animate-fadeIn">
+            <div class="bg-custom-card rounded-lg shadow-lg p-6 border border-custom">
+                <div class="flex flex-col md:flex-row items-center mb-6">
+                    <div class="md:w-1/3 flex justify-center mb-6 md:mb-0">
+                        <div class="illustration">
+                            <div class="person">
+                                <div class="person-head"></div>
+                                <div class="person-body"></div>
+                            </div>
+                            <div class="person">
+                                <div class="person-head"></div>
+                                <div class="person-body"></div>
+                            </div>
+                            <div class="person person-alert">
+                                <div class="person-head"></div>
+                                <div class="person-body"></div>
+                            </div>
+                            <div class="person">
+                                <div class="person-head"></div>
+                                <div class="person-body"></div>
+                            </div>
+                            <div class="person">
+                                <div class="person-head"></div>
+                                <div class="person-body"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 md:pl-8">
+                        <h2 class="text-2xl font-bold mb-4 text-custom">Ciudad Guzmán: Contexto</h2>
+                        <p class="mb-4 text-custom opacity-90">
+                            Ciudad Guzmán, cabecera del municipio de Zapotlán el Grande, se encuentra en el sur de Jalisco. 
+                            Con una población aproximada de 105,000 habitantes, esta ciudad enfrenta diversos desafíos 
+                            en materia de seguridad social que impactan directamente en la calidad de vida de sus residentes.
+                        </p>
+                        <div class="flex flex-wrap gap-4 text-sm">
+                            <div class="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 rounded-full px-3 py-1">Jalisco</div>
+                            <div class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300 rounded-full px-3 py-1">105,000 habitantes</div>
+                            <div class="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300 rounded-full px-3 py-1">Sur de Jalisco</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+                <!-- Estadísticas principales -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-center text-custom animate-fadeIn">Panorama de Inseguridad</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Estadística 1 -->
+                <div class="bg-custom-card rounded-lg shadow p-6 border border-custom card-hover animate-fadeIn delay-1">
+                    <div class="flex flex-col items-center">
+                        <div class="avatar">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-custom">Delitos Patrimoniales</h3>
+                        <p class="text-4xl font-bold mb-2" style="color: var(--primary-color);">68%</p>
+                        <p class="text-center text-custom opacity-80">
+                            De los delitos reportados corresponden a robos y hurtos a casa habitación, 
+                            negocios y transeúntes.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Estadística 2 -->
+                <div class="bg-custom-card rounded-lg shadow p-6 border border-custom card-hover animate-fadeIn delay-2">
+                    <div class="flex flex-col items-center">
+                        <div class="avatar">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-custom">Percepción de Inseguridad</h3>
+                        <p class="text-4xl font-bold mb-2" style="color: var(--primary-color);">72%</p>
+                        <p class="text-center text-custom opacity-80">
+                            De los habitantes se sienten inseguros en las principales zonas de la ciudad.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Estadística 3 -->
+                <div class="bg-custom-card rounded-lg shadow p-6 border border-custom card-hover animate-fadeIn delay-3">
+                    <div class="flex flex-col items-center">
+                        <div class="avatar">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-custom">Confianza en Autoridades</h3>
+                        <p class="text-4xl font-bold mb-2" style="color: var(--primary-color);">35%</p>
+                        <p class="text-center text-custom opacity-80">
+                            De confianza ciudadana en las autoridades encargadas de la seguridad pública.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+                <!-- Gráfica -->
+        <section class="mb-16 animate-fadeIn delay-4">
+            <div class="bg-custom-card rounded-lg shadow-lg p-6 border border-custom">
+                <h2 class="text-2xl font-bold mb-6 text-custom">Tipos de Delitos Reportados en Ciudad Guzmán</h2>
+                <div class="w-full" style="height: 300px;">
+                    <canvas id="crimeChart"></canvas>
+                </div>
+            </div>
+        </section>
+                <!-- Zonas de riesgo -->
+        <section class="mb-16 animate-fadeIn delay-5">
+            <h2 class="text-3xl font-bold mb-8 text-center text-custom">Zonas con Mayor Incidencia</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Zona 1 -->
+                <div class="bg-custom-card rounded-lg shadow p-6 border border-custom card-hover">
+                    <h3 class="text-xl font-bold mb-4 text-custom">Zona Centro</h3>
+                    <div class="mb-4 flex gap-2">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
+                            Alto riesgo
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                            Noche
+                        </span>
+                    </div>
+                    <p class="text-custom opacity-80 mb-4">
+                        La zona centro presenta una alta incidencia de robos a transeúntes y comercios, 
+                        especialmente en horario nocturno y fines de semana. Cerca de los bancos se reporta gente que está al pendiente de toda la gente que entra y sale, en especial en el banco BBVA de el centro.
+                    </p>
+                    <div class="mt-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--accent-color);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <p class="text-sm text-custom opacity-70">Recomendación: Evitar transitar solo durante la noche</p>
+                    </div>
+                </div>
+                
+                <!-- Zona 2 -->
+                <div class="bg-custom-card rounded-lg shadow p-6 border border-custom card-hover">
+                    <h3 class="text-xl font-bold mb-4 text-custom">Colonia Constituyentes y Cristo Rey</h3>
+                    <div class="mb-4 flex gap-2">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
+                            Alto riesgo
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                            Todo horario
+                        </span>
+                    </div>
+                    <p class="text-custom opacity-80 mb-4">
+                        En estas zonas se han reportado frecuentes robos a casa habitación y asaltos 
+                        a comercios locales durante diferentes horarios.
+                    </p>
+                    <div class="mt-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--accent-color);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <p class="text-sm text-custom opacity-70">Recomendación: Reforzar seguridad en hogares y comercios</p>
+                    </div>
+                </div>
+                
+                <!-- Zona 3 -->
+                <div class="bg-custom-card rounded-lg shadow p-6 border border-custom card-hover">
+                    <h3 class="text-xl font-bold mb-4 text-custom">Zona Universitaria/Escolar</h3>
+                    <div class="mb-4 flex gap-2">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300">
+                            Riesgo medio
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                            Tarde-noche
+                        </span>
+                    </div>
+                    <p class="text-custom opacity-80 mb-4">
+                        Los estudiantes reportan frecuentes asaltos al salir de clases en horario vespertino,
+                        especialmente en las rutas hacia paradas de transporte público. Generalmente esto sucede en los parques que quedan de camino a las paradas de camiones o en lugares con poca afluencia de gente.
+                    </p>
+                    <div class="mt-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--accent-color);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <p class="text-sm text-custom opacity-70">Recomendación: Desplazarse en grupos, evitar mostrar objetos de valor</p>
+                    </div>
+                </div>
+                
+                <!-- Zona 4 -->
+                <div class="bg-custom-card rounded-lg shadow p-6 border border-custom card-hover">
+                    <h3 class="text-xl font-bold mb-4 text-custom">Periferia Sur</h3>
+                    <div class="mb-4 flex gap-2">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300">
+                            Riesgo medio
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                            Noche
+                        </span>
+                    </div>
+                    <p class="text-custom opacity-80 mb-4">
+                        Las colonias de reciente creación en la zona sur reportan incidentes de robo a casa habitación (Las colonia Nuevo Desarrollo y Otilio Montaño, además de la Pueblos de Jalisco.)
+                        se reporta vandalismo en áreas de escasa iluminación y parques.
+                    </p>
+                    <div class="mt-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--accent-color);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <p class="text-sm text-custom opacity-70">Recomendación: Mejorar iluminación comunitaria, implementar vigilancia vecinal</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+                <!-- Factores que contribuyen -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-center text-custom animate-fadeIn">Factores que Contribuyen a la Inseguridad</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Factor 1 -->
+                <div class="bg-custom-card rounded-lg shadow p-6 border border-custom card-hover animate-fadeIn delay-1">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-3 rounded-full mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600 dark:text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-custom">Respuesta Policial</h3>
+                    </div>
+                    <p class="text-custom opacity-80">
+                        Tiempo promedio de respuesta policial: 18 minutos. 
+                        La falta de personal y unidades afecta la capacidad de respuesta.
+                    </p>
+                </div>
+                
+                <!-- Factor 2 -->
+                <div class="bg-custom-card rounded-lg shadow p-6 border border-custom card-hover animate-fadeIn delay-2">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 dark:bg-green-900 p-3 rounded-full mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600 dark:text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-custom">Infraestructura Urbana</h3>
+                    </div>
+                    <p class="text-custom opacity-80">
+                        El 42% de las zonas con alta incidencia delictiva presentan
+                        problemas de iluminación pública y espacios abandonados.
+                    </p>
+                </div>
+                
+                <!-- Factor 3 -->
+                <div class="bg-custom-card rounded-lg shadow p-6 border border-custom card-hover animate-fadeIn delay-3">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-custom">Factores Socioeconómicos</h3>
+                    </div>
+                    <p class="text-custom opacity-80">
+                        La tasa de desempleo juvenil (18-29 años) es del 12.3%,
+                        superior al promedio estatal de 9.8%.
+                    </p>
+                </div>
+            </div>
+        </section>
+                <!-- Recomendaciones -->
+        <section class="mb-16 animate-fadeIn delay-4">
+            <div class="bg-custom-card rounded-lg shadow-lg p-6 border border-custom">
+                <h2 class="text-2xl font-bold mb-6 text-custom">Recomendaciones para la Comunidad</h2>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--primary-color);">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-lg font-medium text-custom">Participación ciudadana</h3>
+                            <p class="mt-1 text-custom opacity-80">
+                                Formar comités vecinales de vigilancia y mantener comunicación constante con autoridades.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--primary-color);">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-lg font-medium text-custom">Mejora de infraestructura</h3>
+                            <p class="mt-1 text-custom opacity-80">
+                                Exigir a las autoridades la rehabilitación de espacios públicos abandonados e
+                                implementación de iluminación adecuada en zonas de riesgo.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--primary-color);">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-lg font-medium text-custom">Cultura de la denuncia</h3>
+                            <p class="mt-1 text-custom opacity-80">
+                                Fomentar la denuncia formal de todos los delitos para contribuir a estadísticas más precisas
+                                y mejor asignación de recursos policiales.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--primary-color);">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-lg font-medium text-custom">Programas juveniles</h3>
+                            <p class="mt-1 text-custom opacity-80">
+                                Implementar programas de prevención enfocados a jóvenes, incluyendo actividades deportivas, 
+                                culturales y capacitación para el empleo.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+                <!-- Conclusión -->
+        <section class="mb-16 animate-fadeIn delay-5">
+            <div class="bg-custom-card rounded-lg shadow-lg p-6 border border-custom">
+                <h2 class="text-2xl font-bold mb-4 text-custom">Conclusiones</h2>
+                <p class="mb-4 text-custom opacity-90">
+                    La inseguridad en Ciudad Guzmán es un fenómeno multifactorial que requiere la participación
+                    activa de todos los sectores de la sociedad. Un enfoque integral que combine:
+                </p>
+                <ul class="list-disc list-inside mb-4 space-y-2 text-custom opacity-90">
+                    <li>Fortalecimiento de las instituciones de seguridad</li>
+                    <li>Mejora de la infraestructura urbana</li>
+                    <li>Programas de prevención social de la violencia</li>
+                    <li>Participación ciudadana organizada</li>
+                </ul>
+                <p class="text-custom opacity-90">
+                    Es fundamental crear espacios de diálogo entre autoridades y ciudadanía para diseñar estrategias
+                    efectivas que mejoren las condiciones de seguridad en nuestra comunidad.
+                </p>
+            </div>
+        </section>
+
+        <!-- Pie de página -->
+        <footer class="text-center py-8 text-custom opacity-70 text-sm">
+            <p>Infografía creada para fines educativos. Datos basados en estadísticas oficiales y encuestas a la comunidad.</p>
+            <p class="mt-2">© Infografía sobre Inseguridad Social en Ciudad Guzmán, Jalisco.</p>
+        </footer>
+    </div>
+    
+        <script>
+        // Inicialización de gráficas
+        document.addEventListener('DOMContentLoaded', function() {
+            // Datos para la gráfica de tipos de delitos
+            const ctx = document.getElementById('crimeChart').getContext('2d');
+            
+            // Siempre usar colores de tema oscuro
+const textColor = '#F0F0F0';
+const gridColor = 'rgba(255, 255, 255, 0.1)';
+
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Robo a transeúnte', 'Robo a casa', 'Robo a negocio', 'Vandalismo', 'Asalto', 'Otros'],
+                    datasets: [{
+                        label: 'Porcentaje de incidencia',
+                        data: [28, 24, 16, 12, 10, 10],
+                        backgroundColor: [
+                            '#5D5CDE',
+                            '#7473E3',
+                            '#8D8CE8',
+                            '#A6A5ED',
+                            '#BFBEF2',
+                            '#D8D7F7'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 30,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                color: textColor
+                            },
+                            grid: {
+                                color: gridColor
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: textColor
+                            },
+                            grid: {
+                                color: gridColor
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Inicialización de animaciones
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-fadeIn').forEach(item => {
+                observer.observe(item);
+            });
+        });
+    </script>
+</body>
+</html>
+
